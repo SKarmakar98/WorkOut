@@ -1,23 +1,22 @@
 /* ================= GLOBAL ================= */
 * {
     box-sizing: border-box;
-}
-html,
-body {
-    background-color: #0f0f0f !important;
-    color: #ffffff !important;
+    /* Removes the blue tap highlight on mobile devices */
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
-    background-color: #fff;
-    color: #212529;
+    background-color: #0f0f0f;
+    color: #f8f9fa; /* Slightly softer than pure white for readability */
     font-family:
+        "Inter",
         "Segoe UI",
         -apple-system,
         BlinkMacSystemFont,
         sans-serif;
     margin: 0;
-    padding-bottom: 100px; /* space for bottom nav */
+    /* Extra padding so content isn't hidden behind the bottom nav */
+    padding-bottom: 90px;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -38,16 +37,17 @@ body {
 .hero h1 {
     font-weight: 700;
     letter-spacing: 0.5px;
+    color: #ffffff;
 }
 
 .hero p {
-    opacity: 0.85;
+    color: #e0e0e0;
 }
 
 /* ================= CONTAINER ================= */
 .container {
     max-width: 600px;
-    margin: 20px auto;
+    margin: 0 auto;
     padding: 20px;
 }
 
@@ -56,16 +56,11 @@ body {
     background: #1a1a1a !important;
     color: #ffffff !important;
     border-radius: 22px;
-    padding: 20px;
+    padding: 24px 20px; /* Slightly more vertical padding */
     margin-bottom: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
     transition: all 0.25s ease;
-}
-
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6);
 }
 
 .card h5 {
@@ -73,70 +68,108 @@ body {
     margin-bottom: 10px;
 }
 
-/* ================= BUTTON ================= */
+/* Round the corners of the YouTube video */
+.ratio iframe {
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ================= BUTTONS ================= */
 button {
     margin-top: 10px;
-    padding: 12px 18px;
+    padding: 14px 20px; /* Taller touch targets for mobile (min 44px) */
     background: linear-gradient(135deg, #00c853, #00e676);
     border: none;
     border-radius: 14px;
-    color: white;
+    color: #121212; /* Dark text on bright button for contrast */
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 700;
+    font-size: 16px;
     transition: all 0.2s ease;
 }
 
-button:hover {
-    transform: scale(1.04);
-    box-shadow: 0 5px 15px rgba(0, 255, 149, 0.4);
+/* Desktop hover */
+@media (hover: hover) {
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 255, 149, 0.3);
+    }
+}
+
+/* Mobile tap physical feedback */
+button:active {
+    transform: scale(0.96);
+    box-shadow: none;
+}
+
+button.btn-danger {
+    background: linear-gradient(135deg, #ff4d4d, #ff3333);
+    color: white;
+}
+
+button.btn-secondary {
+    background: #2a2a2a;
+    color: white;
+}
+
+button.btn-warning {
+    background: linear-gradient(135deg, #ffc107, #ffb300);
+    color: #121212;
 }
 
 /* ================= INPUT ================= */
 input {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     margin-top: 6px;
     background: #2a2a2a;
-    border: 1px solid transparent;
+    border: 1.5px solid transparent;
     border-radius: 12px;
     color: white;
-    transition: 0.2s;
+    font-size: 16px; /* Prevents auto-zoom on iOS Safari */
+    transition: 0.2s ease;
 }
 
 input:focus {
-    border: 1px solid #00ff95;
+    border-color: #00ff95;
     outline: none;
     background: #2f2f2f;
+    box-shadow: 0 0 0 3px rgba(0, 255, 149, 0.15);
 }
 
 /* ================= BOTTOM NAV ================= */
 .bottom-nav {
     position: fixed;
     bottom: 0;
+    left: 0;
     width: 100%;
-    background: #121212;
+    background: rgba(18, 18, 18, 0.85); /* Slightly transparent */
     display: flex;
     justify-content: space-around;
-    padding: 12px 0 calc(12px + env(safe-area-inset-bottom));
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
+    padding: 12px 0 calc(12px + env(safe-area-inset-bottom)); /* iOS safe area */
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px); /* Native glassmorphism */
+    -webkit-backdrop-filter: blur(12px); /* Safari support */
     z-index: 1000;
 }
 
 .bottom-nav a {
-    color: #888;
+    color: #777;
     text-decoration: none;
-    font-size: 11px;
+    font-size: 12px;
+    font-weight: 500;
     text-align: center;
     flex: 1;
-    transition: 0.2s ease;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
 }
 
 .bottom-nav i {
-    display: block;
-    font-size: 20px;
-    margin-bottom: 4px;
-    transition: 0.2s ease;
+    font-size: 22px;
+    transition: all 0.2s ease;
 }
 
 .bottom-nav a.active {
@@ -144,11 +177,12 @@ input:focus {
 }
 
 .bottom-nav a.active i {
-    transform: scale(1.1);
+    transform: scale(1.15) translateY(-2px);
 }
 
-.bottom-nav a:hover {
-    color: #00ff95;
+/* ================= UTILITIES & OVERRIDES ================= */
+.text-muted {
+    color: #9e9e9e !important;
 }
 
 /* ================= SMALL SCREEN POLISH ================= */
@@ -158,6 +192,10 @@ input:focus {
     }
 
     .card {
-        padding: 18px;
+        padding: 20px 16px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
     }
 }
