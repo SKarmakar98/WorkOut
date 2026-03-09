@@ -13,22 +13,26 @@ const workouts = {
         exercises: [
             {
                 title: "Squats",
-                guide: "Stand shoulder-width. Push hips back. Keep chest up.",
+                reps: "15 reps × 4 sets",
+                guide: "Stand shoulder-width apart. Push hips back and down.",
                 video: "https://www.youtube.com/embed/aclHkVaku9U"
             },
             {
                 title: "Pushups",
-                guide: "Body straight. Lower chest. Push up strong.",
+                reps: "12–15 reps × 4 sets",
+                guide: "Keep body straight and lower chest to floor.",
                 video: "https://www.youtube.com/embed/IODxDxX7oi4"
             },
             {
                 title: "Reverse Lunges",
-                guide: "Step back. Lower knee. Push through front heel.",
+                reps: "12 each leg × 3 sets",
+                guide: "Step backward and lower knee toward floor.",
                 video: "https://www.youtube.com/embed/QOVaHwm-Q6U"
             },
             {
                 title: "Plank",
-                guide: "Elbows under shoulders. Keep core tight.",
+                reps: "40 sec × 3 sets",
+                guide: "Keep body straight and core tight.",
                 video: "https://www.youtube.com/embed/pSHjTRCQxIw"
             }
         ]
@@ -39,17 +43,20 @@ const workouts = {
         exercises: [
             {
                 title: "High Knees",
-                guide: "Run in place. Lift knees high.",
+                reps: "40 sec",
+                guide: "Run in place lifting knees high.",
                 video: "https://www.youtube.com/embed/OAJ_J3EZkdY"
             },
             {
                 title: "Jump Squats",
+                reps: "40 sec",
                 guide: "Squat then explode upward.",
                 video: "https://www.youtube.com/embed/U4s4mEQ5VqU"
             },
             {
                 title: "Mountain Climbers",
-                guide: "Plank position. Drive knees fast.",
+                reps: "40 sec",
+                guide: "Plank position and drive knees quickly.",
                 video: "https://www.youtube.com/embed/nmwgirgXLYM"
             }
         ]
@@ -59,34 +66,39 @@ const workouts = {
 /* ================= LOAD TODAY ================= */
 
 const todayIndex = new Date().getDay();
-
-// fallback if today not defined
 const todayWorkout = workouts[todayIndex] || workouts[1];
 
 let currentExerciseIndex = 0;
 
 /* Show Day Name */
+
 if (document.getElementById("todayName")) {
     document.getElementById("todayName").innerText =
         dayNames[todayIndex];
 }
 
 /* Show Workout Name */
+
 if (document.getElementById("todayWorkout")) {
     document.getElementById("todayWorkout").innerText =
         todayWorkout.name;
 }
 
-/* ================= STEP LOGIC ================= */
+/* ================= LOAD EXERCISE ================= */
 
 function loadExercise() {
-    const exercise = todayWorkout.exercises[currentExerciseIndex];
 
+    const exercise = todayWorkout.exercises[currentExerciseIndex];
     if (!exercise) return;
 
     if (document.getElementById("exerciseTitle")) {
         document.getElementById("exerciseTitle").innerText =
             exercise.title;
+    }
+
+    if (document.getElementById("exerciseReps")) {
+        document.getElementById("exerciseReps").innerText =
+            exercise.reps;
     }
 
     if (document.getElementById("exerciseGuide")) {
@@ -98,20 +110,36 @@ function loadExercise() {
         document.getElementById("exerciseVideo").src =
             exercise.video;
     }
+
+    /* progress indicator */
+    if (document.getElementById("exerciseProgress")) {
+        document.getElementById("exerciseProgress").innerText =
+            (currentExerciseIndex + 1) +
+            " / " +
+            todayWorkout.exercises.length;
+    }
+
 }
 
+/* ================= NEXT EXERCISE ================= */
+
 function nextExercise() {
+
     currentExerciseIndex++;
 
     if (currentExerciseIndex >= todayWorkout.exercises.length) {
-        alert("Workout Completed! 🔥 Great Job!");
+
+        alert("🔥 Workout Completed! Great Job!");
+
         currentExerciseIndex = 0;
+        return;
     }
 
     loadExercise();
 }
 
-/* Load First Exercise */
+/* first load */
+
 if (document.getElementById("exerciseTitle")) {
     loadExercise();
 }
@@ -128,41 +156,38 @@ if (document.getElementById("streakCount")) {
 function completeWorkout() {
     streak++;
     localStorage.setItem("streak", streak);
-    alert("Workout Completed! 🔥");
+    alert("Workout logged!");
 }
 
 /* ================= WEIGHT ================= */
 
 function saveWeight() {
-    const weight = document.getElementById("weightInput").value;
+
+    const weight =
+        document.getElementById("weightInput").value;
+
     localStorage.setItem("weight", weight);
-    alert("Weight Saved!");
+
+    alert("Weight saved!");
 }
 
 if (document.getElementById("currentWeight")) {
-    const weight = localStorage.getItem("weight") || "Not Set";
+
+    const weight =
+        localStorage.getItem("weight") || "Not Set";
+
     document.getElementById("currentWeight").innerText =
         weight + " kg";
 }
 
-/* ================= DIET ================= */
-
-function saveDiet() {
-    const protein = document.getElementById("proteinInput").value;
-    const water = document.getElementById("waterInput").value;
-
-    localStorage.setItem("protein", protein);
-    localStorage.setItem("water", water);
-
-    alert("Diet Saved!");
-}
-
 /* ================= ACTIVE TAB ================= */
 
-const currentPage = window.location.pathname.split("/").pop();
+const currentPage =
+    window.location.pathname.split("/").pop();
 
-document.querySelectorAll(".bottom-nav a").forEach(link => {
-    if (link.getAttribute("href") === currentPage) {
-        link.classList.add("active");
-    }
-});
+document.querySelectorAll(".bottom-nav a")
+    .forEach(link => {
+        if (link.getAttribute("href") === currentPage) {
+            link.classList.add("active");
+        }
+    });
